@@ -1,15 +1,19 @@
 class Deck
-  attr_reader :cards, :deal
+  attr_reader :cards, :hands
   TYPES  = %w(spade heart diamond club).freeze
   VALUES = %w(A K Q J T 9 8 7 6 5 4 3 2).freeze
   CARD_VALUES = {'A': 4, 'K': 3, 'Q': 2, 'J': 1}
 
   def initialize
+    reset
+  end
+
+  def reset
     @cards = []
-    @deal = {}
+    @hands = []
     TYPES.each do |type|
       VALUES.each do |value|
-        @cards << { type: type, value: value }
+        @cards << { type: type, value: value, point: CARD_VALUES.fetch(value.to_sym, 0) }
       end
     end
   end
@@ -18,23 +22,37 @@ class Deck
     @cards.delete_at(rand(@cards.length))
   end
 
-  def deal_hands(range)
-    PlayerPosition::POSITIONS.each do |seat|
-      deal[seat] = OpenStruct.new(cards: [])
-      1.upto(13) do
-        deal[seat].cards << pick  
+  def deal(range = nil)
+    loop do
+      hand = deal_seat("west")
+      if in_range(hand, range)
+        hands << hand      
+        break
+      else 
+        reset
       end
-      deal[seat].cards.sort_by!{|a| ::Deck::VALUES.index(a[:value])}
     end
-    points
+
+    (PlayerPosition::POSITIONS - ["west"]).each do |seat|
+      hands << deal_seat(seat)
+    end
   end
 
-  def points
-    PlayerPosition::POSITIONS.each do |seat|
-      deal[seat].points = 0
-      deal[seat].cards.each do |card|
-        deal[seat].points += CARD_VALUES.fetch(card[:value].to_sym, 0)
-      end
+  private
+  def deal_seat(seat)
+    seat = { seat: seat, cards: [], points: 0 }
+    1.upto(13) do
+      seat[:cards] << card = pick 
+      seat[:points] += card[:point]
     end
+    seat[:cards].sort_by!{|a| ::Deck::VALUES.index(a[:value])}
+    seat
+  end
+
+  def in_range(hand, range)
+    return true if range.blank?
+    
+    min, max = range.split('..').collect{|x| x.to_i}
+    (hand[:points] >= min) && (hand[:points] <= max)    
   end
 end

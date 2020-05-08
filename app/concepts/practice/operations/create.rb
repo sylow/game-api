@@ -9,20 +9,13 @@ class Practice::Create < Trailblazer::Operation
   end
 
   def create_hands(ctx, params:, **)
-    result = []
-    min, max = params[:range].split('..').collect{|x| x.to_i}
-    loop do |deal|
+    deals = []
+    1.upto(5) do
       d = Deck.new
-      d.deal_hands(params[:range])
-      valid_hand = d.deal.select {|hand, value| value.points >= min && value.points <= min}.first
-      if valid_hand.present?
-        puts valid_hand.inspect
-        ctx[:deal] = d.deal 
-        ctx[:model].data = d.deal
-        break
-      end
+      d.deal(params[:range])
+      deals << d.hands
     end
-    true
+    ctx[:model].data = deals    
   end
 
   def save(ctx, params:, **)
