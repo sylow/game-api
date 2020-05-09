@@ -9,10 +9,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-class Practice < ApplicationRecord
-    belongs_to :user
-    has_many :practice_deals, dependent: :delete_all
-    has_many :deals, through: :practice_deals
-
-    before_create { |p| p.uuid ||= SecureRandom.uuid }
+class PracticeSerializer < ActiveModel::Serializer
+    attributes :kind
+    has_many :deals
 end

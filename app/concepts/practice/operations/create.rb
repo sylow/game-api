@@ -3,19 +3,19 @@ class Practice::Create < Trailblazer::Operation
   step :assigns
   step :create_hands
   step :save
+
   def assigns(ctx, params:, **)
     ctx[:model].user = User.first
+    ctx[:model].kind = 'bidding'
+    
     ctx[:hands] = []
   end
 
   def create_hands(ctx, params:, **)
     deals = []
     1.upto(5) do
-      d = Deck.new
-      d.deal(params[:range])
-      deals << d.hands
+      ctx[:model].deals << Deal::Practice.(params: { range: params[:range], deck: Deck.new})[:model]
     end
-    ctx[:model].data = deals    
   end
 
   def save(ctx, params:, **)

@@ -10,15 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_06_041530) do
+ActiveRecord::Schema.define(version: 2020_05_09_033951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
+# Could not dump table "deals" because of following StandardError
+#   Unknown type 'player_position' for column 'dealer'
+
+# Could not dump table "hands" because of following StandardError
+#   Unknown type 'player_position' for column 'seat'
+
+  create_table "practice_deals", force: :cascade do |t|
+    t.bigint "practice_id", null: false
+    t.bigint "deal_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["deal_id"], name: "index_practice_deals_on_deal_id"
+    t.index ["practice_id"], name: "index_practice_deals_on_practice_id"
+  end
+
   create_table "practices", force: :cascade do |t|
     t.string "kind"
-    t.jsonb "data", default: {}
     t.bigint "user_id", null: false
     t.uuid "uuid"
     t.datetime "created_at", precision: 6, null: false
@@ -34,5 +48,7 @@ ActiveRecord::Schema.define(version: 2020_05_06_041530) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "practice_deals", "deals"
+  add_foreign_key "practice_deals", "practices"
   add_foreign_key "practices", "users"
 end
