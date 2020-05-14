@@ -1,4 +1,4 @@
-class Practice::Create < Trailblazer::Operation
+class Practice::Generate < Trailblazer::Operation
   step Model(Practice, :new)
   step :assigns
   step :create_hands
@@ -11,7 +11,7 @@ class Practice::Create < Trailblazer::Operation
 
   def create_hands(ctx, params:, **)
     deals = []
-    1.upto(5) do
+    1.upto(10) do
       ctx[:model].deals << Deal::Practice.(params: { range: params[:range], deck: Deck.new})[:model]
     end
   end

@@ -1,9 +1,9 @@
-class Practice::Bookmark < Trailblazer::Operation
+class List::Add < Trailblazer::Operation
   step :find_model
   step :create_deal
 
   def find_model(ctx, params:, **)
-    ctx[:model] = Practice.first
+    ctx[:model] = List.first
   end
 
   def create_deal(ctx, params:, **)

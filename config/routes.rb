@@ -3,7 +3,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users
       resources :practices do
-        post :bookmark, on: :collection
+        post :generate, on: :collection
+      end
+      resources :lists do
+        post :add, on: :collection
       end
       
       resources :sessions do

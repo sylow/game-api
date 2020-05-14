@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_09_033951) do
+ActiveRecord::Schema.define(version: 2020_05_14_152941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -21,6 +21,23 @@ ActiveRecord::Schema.define(version: 2020_05_09_033951) do
 
 # Could not dump table "hands" because of following StandardError
 #   Unknown type 'player_position' for column 'seat'
+
+  create_table "link_to_deals", force: :cascade do |t|
+    t.string "owner_type", null: false
+    t.bigint "owner_id", null: false
+    t.bigint "deal_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["deal_id"], name: "index_link_to_deals_on_deal_id"
+    t.index ["owner_type", "owner_id"], name: "index_link_to_deals_on_owner_type_and_owner_id"
+  end
+
+  create_table "lists", force: :cascade do |t|
+    t.integer "parent_id"
+    t.bigint "user_id", null: false
+    t.uuid "uuid"
+    t.index ["user_id"], name: "index_lists_on_user_id"
+  end
 
   create_table "practice_deals", force: :cascade do |t|
     t.bigint "practice_id", null: false
@@ -48,6 +65,8 @@ ActiveRecord::Schema.define(version: 2020_05_09_033951) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "link_to_deals", "deals"
+  add_foreign_key "lists", "users"
   add_foreign_key "practice_deals", "deals"
   add_foreign_key "practice_deals", "practices"
   add_foreign_key "practices", "users"
