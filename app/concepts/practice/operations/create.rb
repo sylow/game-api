@@ -2,13 +2,11 @@ class Practice::Create < Trailblazer::Operation
   step Model(Practice, :new)
   step :assigns
   step :create_hands
-  step :save
+  #step :save
 
   def assigns(ctx, params:, **)
     ctx[:model].user = User.first
     ctx[:model].kind = 'bidding'
-    
-    ctx[:hands] = []
   end
 
   def create_hands(ctx, params:, **)

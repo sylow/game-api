@@ -10,6 +10,6 @@
 #  updated_at :datetime         not null
 #
 class PracticeSerializer < ActiveModel::Serializer
-    attributes :kind
+    attributes :kind, :uuid
     has_many :deals
 end

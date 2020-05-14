@@ -7,4 +7,9 @@ class Api::V1::PracticesController < ApplicationController
       render json: {error: 'Check your username and password'}
     end
   end
+
+  def bookmark
+    result = Practice::Bookmark.(params: params)
+    render json: 'works'
+  end
 end

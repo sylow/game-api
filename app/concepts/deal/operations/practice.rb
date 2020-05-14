@@ -2,7 +2,7 @@
 class Deal::Practice < Trailblazer::Operation
   step Model(Deal, :new)
   step :assigns
-  step :save
+  #step :save
   step :create_hands
 
   def assigns(ctx, params:, **)
