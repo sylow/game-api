@@ -33,28 +33,11 @@ ActiveRecord::Schema.define(version: 2020_05_14_152941) do
   end
 
   create_table "lists", force: :cascade do |t|
+    t.string "name"
     t.integer "parent_id"
     t.bigint "user_id", null: false
     t.uuid "uuid"
     t.index ["user_id"], name: "index_lists_on_user_id"
-  end
-
-  create_table "practice_deals", force: :cascade do |t|
-    t.bigint "practice_id", null: false
-    t.bigint "deal_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["deal_id"], name: "index_practice_deals_on_deal_id"
-    t.index ["practice_id"], name: "index_practice_deals_on_practice_id"
-  end
-
-  create_table "practices", force: :cascade do |t|
-    t.string "kind"
-    t.bigint "user_id", null: false
-    t.uuid "uuid"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_practices_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -67,7 +50,4 @@ ActiveRecord::Schema.define(version: 2020_05_14_152941) do
 
   add_foreign_key "link_to_deals", "deals"
   add_foreign_key "lists", "users"
-  add_foreign_key "practice_deals", "deals"
-  add_foreign_key "practice_deals", "practices"
-  add_foreign_key "practices", "users"
 end

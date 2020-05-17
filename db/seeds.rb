@@ -12,3 +12,5 @@ User.create([
         { username: 'hakan', password: '123456'},
         { username: 'ulas', password: '123456'},       
 ])
+
+List.create(user: User.first, name: 'Practice')
