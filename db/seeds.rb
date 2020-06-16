@@ -14,3 +14,8 @@ User.create([
 ])
 
 List.create(user: User.first, name: 'Practice')
+
+Convention.create([
+        { name: 'Drury', user: User.first },
+        { name: 'Stayman', user: User.first },
+])
