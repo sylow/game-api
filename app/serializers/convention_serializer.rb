@@ -1,3 +1,3 @@
 class ConventionSerializer < ActiveModel::Serializer
-    attributes :id, :name
+    attributes :id, :name, :blocks
 end

@@ -10,11 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_15_021452) do
+ActiveRecord::Schema.define(version: 2020_06_22_050757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "blocks", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.bigint "convention_id", null: false
+    t.jsonb "bidding", default: []
+    t.jsonb "cards", default: []
+    t.index ["convention_id"], name: "index_blocks_on_convention_id"
+  end
 
   create_table "conventions", force: :cascade do |t|
     t.string "name"

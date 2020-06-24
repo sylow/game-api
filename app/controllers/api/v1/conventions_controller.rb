@@ -4,6 +4,12 @@ class Api::V1::ConventionsController < ApplicationController
     render json: result[:model]
   end
 
+  def show
+    result = Convention::Show.(params: params)
+    render json: result[:model]
+  end
+  
+  
   def create
     result = Convention::Create.(params: params)
 
